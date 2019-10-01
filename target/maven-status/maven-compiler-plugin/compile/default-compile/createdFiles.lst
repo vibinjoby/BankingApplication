@@ -1,0 +1,9 @@
+com\bankingsystem\model\FileDetails.class
+com\bankingsystem\model\AccountDetails.class
+com\bankingsystem\model\PersonalDetails.class
+com\bankingsystem\model\AccountType.class
+com\bankingsystem\model\CardDetails.class
+com\bankingsystem\model\CustomerDetails.class
+com\bankingsystem\db\CustomerReadWriteData.class
+com\bankingsystem\util\BankingUtil.class
+com\bankingsystem\model\CustomerName.class
