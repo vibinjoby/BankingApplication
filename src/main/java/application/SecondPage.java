@@ -1,6 +1,7 @@
 package application;
 
 import com.bankingsystem.db.CustomerReadWriteData;
+import com.bankingsystem.model.CardDetails;
 import com.bankingsystem.model.CustomerDetails;
 import com.bankingsystem.model.PersonalDetails;
 
@@ -123,9 +124,11 @@ public class SecondPage {
 						new PersonalDetails(maideNameField.getText(), sinNumField.getText(), pinNumField.getText()));
 				custDetails.setAccountNumber(String.valueOf(FrontEndUtils.generateAccountNumber()));
 				custDetails.setCustomerId(String.valueOf(FrontEndUtils.generateCustomerId()));
+				custDetails.setDebitCardDetails(new CardDetails(String.valueOf(FrontEndUtils.generateDebitCardNumber()), "08/21", "123", true));
+				custDetails.setCreditCardDetails(new CardDetails(String.valueOf(FrontEndUtils.generateCreditCardNumber()), "07/21", "467", false));
 				if (CustomerReadWriteData.addNewCustomer(custDetails))
 					FrontEndUtils.showAlert(AlertType.INFORMATION, gridPane.getScene().getWindow(),
-							"Registration Successful! ", "\n Welcome " + custDetails.getName().getFirstName()
+							"Registration Successful! ", "\n Mr. " + custDetails.getName().getFirstName()
 									+ "Your Account Number is: " + custDetails.getAccountNumber());
 				else
 					FrontEndUtils.showAlert(AlertType.ERROR, gridPane.getScene().getWindow(),

@@ -6,7 +6,6 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 
-import com.bankingsystem.model.CustomerDetails;
 import com.bankingsystem.model.FileDetails;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -65,7 +64,7 @@ public class BankingUtil {
 	 * @param customerDetails
 	 * @return
 	 */
-	public static String getJsonObjAsString(CustomerDetails customerDetails) {
+	public static String getJsonObjAsString(Object customerDetails) {
 		Gson gson = new Gson();
 		return gson.toJson(customerDetails);
 	}
