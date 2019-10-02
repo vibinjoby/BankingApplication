@@ -121,14 +121,14 @@ public class SecondPage {
 				RegistrationFormApplication.primaryStage.hide();
 				custDetails.setPersonalDetails(
 						new PersonalDetails(maideNameField.getText(), sinNumField.getText(), pinNumField.getText()));
-				custDetails.setAccountNumber(String.valueOf(UiUtilities.generateAccountNumber()));
-				custDetails.setCustomerId(String.valueOf(UiUtilities.generateCustomerId()));
+				custDetails.setAccountNumber(String.valueOf(FrontEndUtils.generateAccountNumber()));
+				custDetails.setCustomerId(String.valueOf(FrontEndUtils.generateCustomerId()));
 				if (CustomerReadWriteData.addNewCustomer(custDetails))
-					UiUtilities.showAlert(AlertType.INFORMATION, gridPane.getScene().getWindow(),
+					FrontEndUtils.showAlert(AlertType.INFORMATION, gridPane.getScene().getWindow(),
 							"Registration Successful! ", "\n Welcome " + custDetails.getName().getFirstName()
 									+ "Your Account Number is: " + custDetails.getAccountNumber());
 				else
-					UiUtilities.showAlert(AlertType.ERROR, gridPane.getScene().getWindow(),
+					FrontEndUtils.showAlert(AlertType.ERROR, gridPane.getScene().getWindow(),
 							"Registration Failed!!", "\n Please try again Later");
 			}
 		});

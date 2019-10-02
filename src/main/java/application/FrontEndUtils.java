@@ -12,7 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Window;
 
-public class UiUtilities {
+public class FrontEndUtils {
 	
 	private static int custId;
 	private static long accNumber;
