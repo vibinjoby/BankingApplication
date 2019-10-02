@@ -4,21 +4,30 @@ public class CustomerDetails {
 	private String customerId;
 	private CustomerName name;
 	private String accountNumber;
+	private String customerEmail;
 	private PersonalDetails personalDetails;
 	private AccountType accountType;
 	private CardDetails debitCardDetails;
 	private CardDetails creditCardDetails;
+	private boolean isSavingsAcc;
+	private boolean isChequingAcc;
+	private boolean isStudentAcc;
 
-	public CustomerDetails(String customerId, CustomerName name, String accountNumber, PersonalDetails personalDetails,
-			AccountType accountType, CardDetails debitCardDetails, CardDetails creditCardDetails) {
+	public CustomerDetails(String customerId, CustomerName name, String accountNumber, String customerEmail,
+			PersonalDetails personalDetails, AccountType accountType, CardDetails debitCardDetails,
+			CardDetails creditCardDetails, boolean isSavingsAcc, boolean isChequingAcc, boolean isStudentAcc) {
 		super();
 		this.customerId = customerId;
 		this.name = name;
 		this.accountNumber = accountNumber;
+		this.customerEmail = customerEmail;
 		this.personalDetails = personalDetails;
 		this.accountType = accountType;
 		this.debitCardDetails = debitCardDetails;
 		this.creditCardDetails = creditCardDetails;
+		this.isSavingsAcc = isSavingsAcc;
+		this.isChequingAcc = isChequingAcc;
+		this.isStudentAcc = isStudentAcc;
 	}
 
 	public String getCustomerId() {
@@ -77,11 +86,45 @@ public class CustomerDetails {
 		this.creditCardDetails = creditCardDetails;
 	}
 
+	public String getCustomerEmail() {
+		return customerEmail;
+	}
+
+	public void setCustomerEmail(String customerEmail) {
+		this.customerEmail = customerEmail;
+	}
+
+	public boolean isSavingsAcc() {
+		return isSavingsAcc;
+	}
+
+	public void setSavingsAcc(boolean isSavingsAcc) {
+		this.isSavingsAcc = isSavingsAcc;
+	}
+
+	public boolean isChequingAcc() {
+		return isChequingAcc;
+	}
+
+	public void setChequingAcc(boolean isChequingAcc) {
+		this.isChequingAcc = isChequingAcc;
+	}
+
+	public boolean isStudentAcc() {
+		return isStudentAcc;
+	}
+
+	public void setStudentAcc(boolean isStudentAcc) {
+		this.isStudentAcc = isStudentAcc;
+	}
+
 	@Override
 	public String toString() {
 		return "CustomerDetails [customerId=" + customerId + ", name=" + name + ", accountNumber=" + accountNumber
-				+ ", personalDetails=" + personalDetails + ", accountType=" + accountType + ", debitCardDetails="
-				+ debitCardDetails + ", creditCardDetails=" + creditCardDetails + "]";
+				+ ", customerEmail=" + customerEmail + ", personalDetails=" + personalDetails + ", accountType="
+				+ accountType + ", debitCardDetails=" + debitCardDetails + ", creditCardDetails=" + creditCardDetails
+				+ ", isSavingsAcc=" + isSavingsAcc + ", isChequingAcc=" + isChequingAcc + ", isStudentAcc="
+				+ isStudentAcc + "]";
 	}
 
 }
