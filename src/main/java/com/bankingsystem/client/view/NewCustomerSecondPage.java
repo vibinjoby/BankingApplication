@@ -1,9 +1,9 @@
-package application;
+package com.bankingsystem.client.view;
 
 import com.bankingsystem.db.CustomerReadWriteData;
-import com.bankingsystem.model.CardDetails;
 import com.bankingsystem.model.CustomerDetails;
-import com.bankingsystem.model.PersonalDetails;
+import com.bankingsystem.model.ErrorDetails;
+import com.bankingsystem.util.FrontEndUtils;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -20,8 +20,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Stage;
 
-public class SecondPage {
+public class NewCustomerSecondPage extends FrontEndUtils {
 
 	public static GridPane createRegistrationFormPane() {
 		// Instantiate a new Grid Pane
@@ -50,12 +51,14 @@ public class SecondPage {
 		ColumnConstraints columnTwoConstrains = new ColumnConstraints(50, 50, Double.MAX_VALUE);
 		columnTwoConstrains.setHgrow(Priority.ALWAYS);
 
-		gridPane.getColumnConstraints().addAll(columnOneConstraints, columnTwoConstrains);
+		// gridPane.getColumnConstraints().addAll(columnOneConstraints,
+		// columnTwoConstrains);
 
 		return gridPane;
 	}
 
-	public static void addUIControls(final GridPane gridPane, final CustomerDetails custDetails) {
+	public static void addUIControls(final GridPane gridPane, final CustomerDetails custDetails,
+			final LoginManager loginManager, final Stage primaryStage) {
 		// Add Header
 		Label headerLabel = new Label("Enter the Personal Details");
 		headerLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
@@ -119,21 +122,20 @@ public class SecondPage {
 		nextButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				RegistrationFormApplication.primaryStage.hide();
-				custDetails.setPersonalDetails(
-						new PersonalDetails(maideNameField.getText(), sinNumField.getText(), pinNumField.getText()));
-				custDetails.setAccountNumber(String.valueOf(FrontEndUtils.generateAccountNumber()));
-				custDetails.setCustomerId(String.valueOf(FrontEndUtils.generateCustomerId()));
-				custDetails.setDebitCardDetails(new CardDetails(String.valueOf(FrontEndUtils.generateDebitCardNumber()), "08/21", "123", true));
-				custDetails.setCreditCardDetails(new CardDetails(String.valueOf(FrontEndUtils.generateCreditCardNumber()), "07/21", "467", false));
-				if (CustomerReadWriteData.addNewCustomer(custDetails))
-					FrontEndUtils.showAlert(AlertType.INFORMATION, gridPane.getScene().getWindow(),
-							"Registration Successful! ", "\n Mr. " + custDetails.getName().getFirstName()
-									+ "Your Account Number is: " + custDetails.getAccountNumber());
+				NewCustomerFirstPage.primaryStage.hide();
+				addCustDetails(custDetails, checkBoxSav, checkBoxCheq, checkBoxStud, maideNameField, sinNumField,
+						pinNumField);
+				ErrorDetails error = CustomerReadWriteData.addNewCustomer(custDetails);
+				if (error == null)
+					showAlert(AlertType.INFORMATION, gridPane.getScene().getWindow(), "Registration Successful! ",
+							"\n Mr. " + custDetails.getName().getFirstName() + "Your Account Number is: "
+									+ custDetails.getAccountNumber());
 				else
-					FrontEndUtils.showAlert(AlertType.ERROR, gridPane.getScene().getWindow(),
-							"Registration Failed!!", "\n Please try again Later");
+					showAlert(AlertType.ERROR, gridPane.getScene().getWindow(), "Registration Failed!!",
+							"\n" + error.getErrorDescription());
+				
 			}
+
 		});
 	}
 }
