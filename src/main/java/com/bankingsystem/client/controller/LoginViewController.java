@@ -7,7 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 /** Controls the login screen */
-public class LoginController {
+public class LoginViewController {
 	@FXML
 	private TextField user;
 	@FXML
@@ -23,7 +23,7 @@ public class LoginController {
 			public void handle(ActionEvent event) {
 				String sessionID = authorize();
 				if (sessionID != null) {
-					loginManager.authenticated(sessionID);
+					loginManager.authenticated();
 				}
 			}
 		});

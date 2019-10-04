@@ -5,6 +5,7 @@ public class CustomerDetails {
 	private CustomerName name;
 	private String accountNumber;
 	private String customerEmail;
+	private String dateOfBirth;
 	private PersonalDetails personalDetails;
 	private AccountType accountType;
 	private CardDetails debitCardDetails;
@@ -14,13 +15,14 @@ public class CustomerDetails {
 	private boolean isStudentAcc;
 
 	public CustomerDetails(String customerId, CustomerName name, String accountNumber, String customerEmail,
-			PersonalDetails personalDetails, AccountType accountType, CardDetails debitCardDetails,
+			String dateOfBirth, PersonalDetails personalDetails, AccountType accountType, CardDetails debitCardDetails,
 			CardDetails creditCardDetails, boolean isSavingsAcc, boolean isChequingAcc, boolean isStudentAcc) {
 		super();
 		this.customerId = customerId;
 		this.name = name;
 		this.accountNumber = accountNumber;
 		this.customerEmail = customerEmail;
+		this.dateOfBirth = dateOfBirth;
 		this.personalDetails = personalDetails;
 		this.accountType = accountType;
 		this.debitCardDetails = debitCardDetails;
@@ -118,13 +120,21 @@ public class CustomerDetails {
 		this.isStudentAcc = isStudentAcc;
 	}
 
+	public String getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(String dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
 	@Override
 	public String toString() {
 		return "CustomerDetails [customerId=" + customerId + ", name=" + name + ", accountNumber=" + accountNumber
-				+ ", customerEmail=" + customerEmail + ", personalDetails=" + personalDetails + ", accountType="
-				+ accountType + ", debitCardDetails=" + debitCardDetails + ", creditCardDetails=" + creditCardDetails
-				+ ", isSavingsAcc=" + isSavingsAcc + ", isChequingAcc=" + isChequingAcc + ", isStudentAcc="
-				+ isStudentAcc + "]";
+				+ ", customerEmail=" + customerEmail + ", dateOfBirth=" + dateOfBirth + ", personalDetails="
+				+ personalDetails + ", accountType=" + accountType + ", debitCardDetails=" + debitCardDetails
+				+ ", creditCardDetails=" + creditCardDetails + ", isSavingsAcc=" + isSavingsAcc + ", isChequingAcc="
+				+ isChequingAcc + ", isStudentAcc=" + isStudentAcc + "]";
 	}
 
 }

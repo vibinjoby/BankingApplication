@@ -1,14 +1,18 @@
 package com.bankingsystem.client.view;
 
 import java.io.IOException;
-import java.util.logging.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import com.bankingsystem.client.controller.LoginController;
+import com.bankingsystem.client.controller.ExistCustTransactionController;
+import com.bankingsystem.client.controller.ExistingViewController;
+import com.bankingsystem.client.controller.LoginViewController;
 import com.bankingsystem.client.controller.MainViewController;
+import com.bankingsystem.client.controller.NewCustViewController;
 
 import javafx.fxml.FXMLLoader;
-import javafx.scene.*;
-import javafx.scene.layout.GridPane;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /** Manages control flow for logins */
@@ -25,8 +29,8 @@ public class LoginManager {
 	 * Callback method invoked to notify that a user has been authenticated. Will
 	 * show the main application screen.
 	 */
-	public void authenticated(String sessionID) {
-		showMainView(sessionID);
+	public void authenticated() {
+		showMainView();
 	}
 
 	/**
@@ -41,16 +45,16 @@ public class LoginManager {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("loginpage.fxml"));
 			scene.setRoot((Parent) loader.load());
-			LoginController controller = loader.<LoginController>getController();
+			LoginViewController controller = loader.<LoginViewController>getController();
 			controller.initManager(this);
 		} catch (IOException ex) {
+			ex.printStackTrace();
 			Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
 
-	public void showMainView(String sessionID) {
+	public void showMainView() {
 		try {
-			System.out.println("Inside main");
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("mainview.fxml"));
 			scene.setRoot((Parent) loader.load());
 			MainViewController controller = loader.<MainViewController>getController();
@@ -61,17 +65,43 @@ public class LoginManager {
 		}
 	}
 
-	public void showNewCustomerPage(Stage primaryStage2) {
-		primaryStage.setTitle("Banking Application System");
-		// Create the registration form grid pane
-		GridPane gridPane = NewCustomerFirstPage.createRegistrationFormPane();
-		// Add UI controls to the registration form grid pane
-		NewCustomerFirstPage.addUIControls(gridPane,this);
-		// Create a scene with registration form grid pane as the root node
-		Scene scene = new Scene(gridPane, 800, 500);
-		// Set the scene in primary stage
-		primaryStage.setScene(scene);
-		NewCustomerFirstPage.primaryStage = primaryStage2;
-		primaryStage.show();
+	public void showNewCustomerPage() {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("newcustomerpage.fxml"));
+			scene.setRoot((Parent) loader.load());
+			NewCustViewController controller = loader.<NewCustViewController>getController();
+			controller.initManager(this);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	}
+
+	public void showExistingCustomerPage() {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("existingcustomerpage.fxml"));
+			scene.setRoot((Parent) loader.load());
+			ExistingViewController controller = loader.<ExistingViewController>getController();
+			controller.initManager(this);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	}
+
+	public void showExistingCustTransactionView() {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("custtransactionpage.fxml"));
+			scene.setRoot((Parent) loader.load());
+			ExistCustTransactionController controller = loader.<ExistCustTransactionController>getController();
+			controller.initManager(this);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	}
+
+	public Scene getScene() {
+		return scene;
 	}
 }

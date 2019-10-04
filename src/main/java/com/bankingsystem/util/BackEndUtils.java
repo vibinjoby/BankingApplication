@@ -71,37 +71,33 @@ public class BackEndUtils {
 		Gson gson = new Gson();
 		return gson.toJson(customerDetails);
 	}
-	
+
 	/**
 	 * @param folder
 	 * @param fileList
 	 * @return
 	 */
 	public static List<File> listFilesForFolder(final File folder, List<File> fileList) {
-		for (final File fileEntry : folder.listFiles()) {
-			if (fileEntry.isDirectory()) {
-				listFilesForFolder(fileEntry, fileList);
-			} else {
-				fileList.add(fileEntry);
+		if (folder.listFiles() != null)
+			for (final File fileEntry : folder.listFiles()) {
+				if (fileEntry.isDirectory())
+					listFilesForFolder(fileEntry, fileList);
+				else
+					fileList.add(fileEntry);
 			}
-		}
 		return fileList;
 	}
-	
+
 	public static boolean checkEmailExists(String email) {
 		List<CustomerDetails> custDetailsList = CustomerReadWriteData.customerDetailsList;
-		if(custDetailsList !=null) {
-			for(CustomerDetails cust:custDetailsList) {
-				if(email.equalsIgnoreCase(cust.getCustomerEmail())) {
+		if (custDetailsList != null) {
+			for (CustomerDetails cust : custDetailsList) {
+				if (email.equalsIgnoreCase(cust.getCustomerEmail())) {
 					return true;
 				}
 			}
 		}
 		return false;
-	}
-	
-	public static void main(String[] args) {
-		System.out.println(checkEmailExists("vibin2joby@gmail.com"));
 	}
 
 }

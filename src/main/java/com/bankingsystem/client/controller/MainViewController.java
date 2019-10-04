@@ -25,14 +25,14 @@ public class MainViewController {
 		newCustomerBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				loginManager.showNewCustomerPage(primaryStage);
+				loginManager.showNewCustomerPage();
 			}
 		});
 
 		existingCustomerBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-
+				loginManager.showExistingCustomerPage();
 			}
 		});
 		logoutBtn.setOnAction(new EventHandler<ActionEvent>() {
