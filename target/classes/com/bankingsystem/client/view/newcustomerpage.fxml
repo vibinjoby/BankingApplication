@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="647.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bankingsystem.client.controller.NewCustViewController">
+   <children>
+      <Button fx:id="resetBtn" layoutX="371.0" layoutY="571.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="63.0" text="Clear">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
+      <Button fx:id="submitBtn" layoutX="270.0" layoutY="571.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="70.0" text="Submit">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
+      <Button fx:id="backBtn" layoutX="188.0" layoutY="571.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="63.0" text="&lt; Back">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
+      <TextField fx:id="firstName" layoutX="273.0" layoutY="102.0" prefHeight="27.0" prefWidth="298.0" />
+      <TextField fx:id="middleName" layoutX="273.0" layoutY="153.0" prefHeight="27.0" prefWidth="298.0" />
+      <TextField fx:id="lastName" layoutX="273.0" layoutY="203.0" prefHeight="27.0" prefWidth="298.0" />
+      <Label contentDisplay="CENTER" layoutX="191.0" layoutY="45.0" text="New Customer Registration">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="64.0" layoutY="106.0" text="First Name">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="64.0" layoutY="157.0" text="Middle Name">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="64.0" layoutY="260.0" text="Date of Birth">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="64.0" layoutY="207.0" text="Last Name">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="64.0" layoutY="307.0" text="Account Type">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="66.0" layoutY="356.0" text="Mothers Maiden Name">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="65.0" layoutY="406.0" text="SIN Number">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="68.0" layoutY="455.0" text="PIN Number">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="mothMaidenName" layoutX="273.0" layoutY="353.0" prefHeight="27.0" prefWidth="298.0" />
+      <TextField fx:id="sinNumber" layoutX="273.0" layoutY="403.0" prefHeight="27.0" prefWidth="298.0" />
+      <TextField fx:id="pinNumber" layoutX="274.0" layoutY="453.0" prefHeight="27.0" prefWidth="298.0" />
+      <DatePicker fx:id="dateOfBirth" layoutX="274.0" layoutY="256.0" prefHeight="27.0" prefWidth="298.0" />
+      <CheckBox fx:id="checkBoxSav" layoutX="274.0" layoutY="308.0" mnemonicParsing="false" text="Savings" />
+      <CheckBox fx:id="checkBoxCheq" layoutX="380.0" layoutY="308.0" mnemonicParsing="false" text="Chequing" />
+      <CheckBox fx:id="checkBoxStud" layoutX="498.0" layoutY="308.0" mnemonicParsing="false" text="Student" />
+      <Separator layoutX="39.0" layoutY="32.0" orientation="VERTICAL" prefHeight="588.0" prefWidth="6.0" />
+      <Separator layoutX="596.0" layoutY="32.0" orientation="VERTICAL" prefHeight="588.0" prefWidth="0.0" />
+      <Separator layoutX="41.0" layoutY="32.0" prefHeight="3.0" prefWidth="557.0" />
+      <Separator layoutX="41.0" layoutY="620.0" prefHeight="3.0" prefWidth="557.0" />
+      <Label layoutX="67.0" layoutY="505.0" text="Email Address">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="emailAddr" layoutX="274.0" layoutY="501.0" prefHeight="27.0" prefWidth="298.0" />
+   </children>
+</AnchorPane>
