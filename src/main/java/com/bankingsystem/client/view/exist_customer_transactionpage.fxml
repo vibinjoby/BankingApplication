@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="616.0" prefWidth="828.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bankingsystem.client.controller.ExistCustTransactionController">
+   <children>
+      <Button fx:id="depositBtn" layoutX="92.0" layoutY="39.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="207.0" text="Deposit Money" />
+      <Button fx:id="withdrawBtn" layoutX="91.0" layoutY="95.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="209.0" text="Withdraw Money" />
+      <Button fx:id="transferBtn" layoutX="92.0" layoutY="149.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="209.0" text="Transfer Between Accounts" />
+      <Button fx:id="interacBtn" layoutX="93.0" layoutY="203.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="208.0" text="Interac Money" />
+      <Label layoutX="102.0" layoutY="292.0" text="Pay Utility Bills" textFill="#0012ff">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+      <Label layoutX="438.0" layoutY="57.0" text="Current Balance" textFill="RED">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <Button fx:id="accStmtBtn" layoutX="414.0" layoutY="165.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="226.0" text="Account Mini Statement">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Button>
+      <Separator layoutX="342.0" layoutY="-1.0" orientation="VERTICAL" prefHeight="508.0" prefWidth="5.0" />
+      <Separator layoutX="1.0" layoutY="262.0" prefHeight="3.0" prefWidth="728.0" />
+      <Button fx:id="logoutBtn" layoutX="585.0" layoutY="7.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="68.0" text="Logout">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Button>
+      <Separator layoutX="57.0" layoutY="24.0" orientation="VERTICAL" prefHeight="233.0" prefWidth="9.0" />
+      <Separator layoutX="325.0" layoutY="24.0" orientation="VERTICAL" prefHeight="232.0" prefWidth="9.0" />
+      <Separator layoutX="60.0" layoutY="24.0" prefHeight="3.0" prefWidth="268.0" />
+      <Separator layoutX="60.0" layoutY="255.0" prefHeight="3.0" prefWidth="268.0" />
+      <Button fx:id="hydroBtn" layoutX="96.0" layoutY="362.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="205.0" text="Hydro Bill" />
+      <Button fx:id="phoneBtn" layoutX="97.0" layoutY="419.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="204.0" text="Cell Phone Bill" />
+      <Separator layoutX="57.0" layoutY="274.0" orientation="VERTICAL" prefHeight="233.0" prefWidth="9.0" />
+      <Separator layoutX="325.0" layoutY="274.0" orientation="VERTICAL" prefHeight="232.0" prefWidth="9.0" />
+      <Separator layoutX="60.0" layoutY="274.0" prefHeight="3.0" prefWidth="268.0" />
+      <Separator layoutX="60.0" layoutY="505.0" prefHeight="3.0" prefWidth="268.0" />
+      <Separator layoutX="388.0" layoutY="43.0" orientation="VERTICAL" prefHeight="194.0" prefWidth="9.0" />
+      <Separator layoutX="656.0" layoutY="43.0" orientation="VERTICAL" prefHeight="193.0" prefWidth="9.0" />
+      <Separator layoutX="391.0" layoutY="41.0" prefHeight="6.0" prefWidth="268.0" />
+      <Separator layoutX="392.0" layoutY="236.0" prefHeight="3.0" prefWidth="268.0" />
+      <Label contentDisplay="CENTER" layoutX="411.0" layoutY="290.0" text="Activate Credit Card" textFill="#0012ff">
+         <font>
+            <Font name="System Bold" size="27.0" />
+         </font>
+      </Label>
+      <Label layoutX="378.0" layoutY="352.0" text="Card Number" />
+      <Label layoutX="378.0" layoutY="397.0" text="Mothers Maiden Name" />
+      <Button fx:id="submitBtn" layoutX="450.0" layoutY="451.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="69.0" text="Submit" />
+      <Button fx:id="resetBtn" layoutX="539.0" layoutY="451.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="70.0" text="Clear" />
+      <TextField fx:id="creditCrdNum" layoutX="528.0" layoutY="345.0" />
+      <TextField fx:id="mothMaidenName" layoutX="528.0" layoutY="393.0" />
+      <Separator layoutX="358.0" layoutY="273.0" orientation="VERTICAL" prefHeight="234.0" prefWidth="6.0" />
+      <Separator layoutX="725.0" layoutY="273.0" orientation="VERTICAL" prefHeight="234.0" prefWidth="6.0" />
+      <Separator layoutX="359.0" layoutY="273.0" prefHeight="3.0" prefWidth="367.0" />
+      <Separator layoutX="361.0" layoutY="504.0" prefHeight="6.0" prefWidth="364.0" />
+      <Button fx:id="homeBtn" layoutX="505.0" layoutY="7.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="68.0" text="Home">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Button>
+      <Label fx:id="savLbl" layoutX="410.0" layoutY="117.0" prefHeight="18.0" prefWidth="208.0" text="savings" />
+      <Label fx:id="cheqLbl" layoutX="410.0" layoutY="95.0" prefHeight="18.0" prefWidth="208.0" text="chequing" />
+      <Label fx:id="studLbl" layoutX="410.0" layoutY="140.0" prefHeight="18.0" prefWidth="208.0" text="student" />
+   </children>
+</AnchorPane>

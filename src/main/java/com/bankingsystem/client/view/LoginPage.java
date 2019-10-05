@@ -13,7 +13,7 @@ public class LoginPage extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		GridPane gridPane = new GridPane();
-		Scene scene = new Scene(gridPane,630,700);
+		Scene scene = new Scene(gridPane,770,700);
 		
 		LoginManager loginManager = new LoginManager(scene,primaryStage);
 		loginManager.showLoginScreen();

@@ -5,10 +5,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.bankingsystem.client.controller.ExistCustTransactionController;
-import com.bankingsystem.client.controller.ExistingViewController;
+import com.bankingsystem.client.controller.ExistCustEntryViewController;
 import com.bankingsystem.client.controller.LoginViewController;
 import com.bankingsystem.client.controller.MainViewController;
 import com.bankingsystem.client.controller.NewCustViewController;
+import com.bankingsystem.model.CustomerDetails;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,7 +19,7 @@ import javafx.stage.Stage;
 /** Manages control flow for logins */
 public class LoginManager {
 	private Scene scene;
-	private Stage primaryStage;
+	public Stage primaryStage;
 
 	public LoginManager(Scene scene,Stage primaryStage) {
 		this.scene = scene;
@@ -79,9 +80,9 @@ public class LoginManager {
 
 	public void showExistingCustomerPage() {
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("existingcustomerpage.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("exist_customer_entrypage.fxml"));
 			scene.setRoot((Parent) loader.load());
-			ExistingViewController controller = loader.<ExistingViewController>getController();
+			ExistCustEntryViewController controller = loader.<ExistCustEntryViewController>getController();
 			controller.initManager(this);
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -89,12 +90,12 @@ public class LoginManager {
 		}
 	}
 
-	public void showExistingCustTransactionView() {
+	public void showExistingCustTransactionView(CustomerDetails customerDetails) {
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("custtransactionpage.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("exist_customer_transactionpage.fxml"));
 			scene.setRoot((Parent) loader.load());
 			ExistCustTransactionController controller = loader.<ExistCustTransactionController>getController();
-			controller.initManager(this);
+			controller.initManager(this,customerDetails);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, null, ex);

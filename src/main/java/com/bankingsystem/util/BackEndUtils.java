@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 import com.bankingsystem.db.CustomerReadWriteData;
@@ -88,6 +90,10 @@ public class BackEndUtils {
 		return fileList;
 	}
 
+	/**
+	 * @param email
+	 * @return
+	 */
 	public static boolean checkEmailExists(String email) {
 		List<CustomerDetails> custDetailsList = CustomerReadWriteData.customerDetailsList;
 		if (custDetailsList != null) {
@@ -100,4 +106,69 @@ public class BackEndUtils {
 		return false;
 	}
 
+	/**
+	 * @param custDetails
+	 * @param mothMaidenName
+	 * @param emailId
+	 * @return
+	 */
+	public static boolean validateCustDetails(CustomerDetails custDetails, String mothMaidenName, String emailId) {
+		if (custDetails.getPersonalDetails() != null) {
+			if (mothMaidenName.equalsIgnoreCase(custDetails.getPersonalDetails().getMotherMaidenDetails())
+					&& emailId.equalsIgnoreCase(custDetails.getCustomerEmail())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * @param accBalance
+	 * @param transactionAmt
+	 * @param operation
+	 * @return
+	 */
+	public static double updateBalance(String accBalance, String transactionAmt, String operation) {
+		if ("ADD".equalsIgnoreCase(operation))
+			return Double.parseDouble(accBalance) + Double.parseDouble(transactionAmt);
+
+		return Double.parseDouble(accBalance) - Double.parseDouble(transactionAmt);
+	}
+
+	/**
+	 * @param accBalance
+	 * @param transactionAmt
+	 * @return
+	 */
+	public static boolean checkSufficientBalance(String accBalance, String transactionAmt, String operation) {
+		try {
+			if ("ADD".equalsIgnoreCase(operation)) {
+				return true;
+			}
+			if (accBalance != null && transactionAmt != null) {
+				if (Double.parseDouble(accBalance) > Double.parseDouble(transactionAmt)) {
+					return true;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	/**
+	 * @param updatedCustomerDetails
+	 */
+	public static void updateCustomerDetailsInFile(CustomerDetails updatedCustomerDetails) {
+		String fileName = updatedCustomerDetails.getName().getFirstName()
+				+ updatedCustomerDetails.getCustomerId().substring(0, 4);
+		FileDetails fileDetails = new FileDetails("C:\\Users\\vibin\\Customer_Data\\" + fileName + ".txt",
+				"C:\\Users\\vibin\\Customer_Data\\" + fileName + ".txt");
+		try {
+			String json = getJsonObjAsString(updatedCustomerDetails);
+			Files.write(Paths.get(fileDetails.getWriteFileTo()), toPrettyFormat(json).getBytes());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
