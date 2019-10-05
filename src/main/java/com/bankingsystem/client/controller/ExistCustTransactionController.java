@@ -382,7 +382,7 @@ public class ExistCustTransactionController extends FrontEndUtils {
 				withdrawBtn.setPrefHeight(40);
 				withdrawBtn.setDefaultButton(true);
 				withdrawBtn.setPrefWidth(100);
-				gridPane.add(withdrawBtn, 0, 4, 2, 1);
+				gridPane.add(withdrawBtn, 0, 3, 2, 1);
 				GridPane.setHalignment(withdrawBtn, HPos.CENTER);
 				GridPane.setMargin(withdrawBtn, new Insets(20, 0, 20, 0));
 
@@ -416,6 +416,161 @@ public class ExistCustTransactionController extends FrontEndUtils {
 								newWindow.close();
 								showAlert(AlertType.CONFIRMATION, loginManager.getScene().getWindow(),
 										"Withdraw Money", "Money Withdrawn Successfully!!");
+								CustomerDetails updatedCustInfo = CustomerReadWriteData.customerDetailsList.get(index);
+								loginManager.showExistingCustTransactionView(updatedCustInfo);
+							}
+						}
+					}
+				});
+			}
+		});
+		
+		hydroBtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				GridPane gridPane = createRegistrationFormPane();
+
+				Label payFromAcct = new Label("Pay from :");
+				gridPane.add(payFromAcct, 0, 1);
+				
+				final ComboBox<String> fromAccountTypeBox = new ComboBox<String>();
+				if (customerDetails.isChequingAcc())
+					fromAccountTypeBox.getItems().add("Chequing");
+				if (customerDetails.isSavingsAcc())
+					fromAccountTypeBox.getItems().add("Savings");
+				if (customerDetails.isStudentAcc())
+					fromAccountTypeBox.getItems().add("Student");
+				gridPane.add(fromAccountTypeBox, 1,1);
+				
+				Label payAmt = new Label("Pay Amount :");
+				gridPane.add(payAmt, 0, 2);
+
+				final TextField withdrawAmtField = new TextField();
+				withdrawAmtField.setPrefHeight(40);
+				gridPane.add(withdrawAmtField, 1, 2);
+				
+				Button payBtn = new Button("Pay");
+				payBtn.setPrefHeight(40);
+				payBtn.setDefaultButton(true);
+				payBtn.setPrefWidth(100);
+				gridPane.add(payBtn, 0, 3, 2, 1);
+				GridPane.setHalignment(payBtn, HPos.CENTER);
+				GridPane.setMargin(payBtn, new Insets(20, 0, 20, 0));
+
+				Scene secondScene = new Scene(gridPane, 500, 300);
+
+				// New window (Stage)
+				final Stage newWindow = new Stage();
+				newWindow.setTitle("Pay Hydro Bill");
+				newWindow.setScene(secondScene);
+
+				// Set position of second window, related to primary window.
+				newWindow.setX(loginManager.primaryStage.getX() + 100);
+				newWindow.setY(loginManager.primaryStage.getY() + 100);
+
+				newWindow.show();
+
+				payBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+					@Override
+					public void handle(ActionEvent event) {
+						if (fromAccountTypeBox.getValue()==null || withdrawAmtField.getText().isEmpty()) {
+							showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), "Inputs Missing",
+									"Please Enter values in all the Fields!!");
+						} else {
+							int index = CustomerReadWriteData.customerDetailsList.indexOf(customerDetails);
+							ErrorDetails error = CustomerReadWriteData.payUtilitiesBill(customerDetails, withdrawAmtField.getText(), fromAccountTypeBox.getValue());
+							if (error != null) {
+								showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), error.getErrorMessage(),
+										error.getErrorDescription());
+							} else {
+								newWindow.close();
+								showAlert(AlertType.CONFIRMATION, loginManager.getScene().getWindow(),
+										"Pay For Utilties", "Bill paid Successfully!!");
+								CustomerDetails updatedCustInfo = CustomerReadWriteData.customerDetailsList.get(index);
+								loginManager.showExistingCustTransactionView(updatedCustInfo);
+							}
+						}
+					}
+				});
+			}
+		});
+		
+		phoneBtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				GridPane gridPane = createRegistrationFormPane();
+
+				Label payFromAcct = new Label("Pay from :");
+				gridPane.add(payFromAcct, 0, 1);
+				
+				final ComboBox<String> fromAccountTypeBox = new ComboBox<String>();
+				if (customerDetails.isChequingAcc())
+					fromAccountTypeBox.getItems().add("Chequing");
+				if (customerDetails.isSavingsAcc())
+					fromAccountTypeBox.getItems().add("Savings");
+				if (customerDetails.isStudentAcc())
+					fromAccountTypeBox.getItems().add("Student");
+				gridPane.add(fromAccountTypeBox, 1,1);
+				
+				Label payAmt = new Label("Pay Amount :");
+				gridPane.add(payAmt, 0, 2);
+
+				final TextField withdrawAmtField = new TextField();
+				withdrawAmtField.setPrefHeight(40);
+				gridPane.add(withdrawAmtField, 1, 2);
+				
+				Label networkProvider = new Label("Network Provider :");
+				gridPane.add(networkProvider, 0, 3);
+				
+				final ComboBox<String> networkProviderBox = new ComboBox<String>();
+				networkProviderBox.getItems().add("Rogers");
+				networkProviderBox.getItems().add("Bell");
+				networkProviderBox.getItems().add("Virgin");
+				networkProviderBox.getItems().add("Chattr");
+				networkProviderBox.getItems().add("Fido");
+				networkProviderBox.getItems().add("Freedom");
+				gridPane.add(networkProviderBox, 1,3);
+				
+				Button payBtn = new Button("Pay");
+				payBtn.setPrefHeight(40);
+				payBtn.setDefaultButton(true);
+				payBtn.setPrefWidth(100);
+				gridPane.add(payBtn, 0, 4, 2, 1);
+				GridPane.setHalignment(payBtn, HPos.CENTER);
+				GridPane.setMargin(payBtn, new Insets(20, 0, 20, 0));
+
+				Scene secondScene = new Scene(gridPane, 500, 300);
+
+				// New window (Stage)
+				final Stage newWindow = new Stage();
+				newWindow.setTitle("Pay Phone Bill");
+				newWindow.setScene(secondScene);
+
+				// Set position of second window, related to primary window.
+				newWindow.setX(loginManager.primaryStage.getX() + 100);
+				newWindow.setY(loginManager.primaryStage.getY() + 100);
+
+				newWindow.show();
+
+				payBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+					@Override
+					public void handle(ActionEvent event) {
+						if (fromAccountTypeBox.getValue()==null || withdrawAmtField.getText().isEmpty() ||
+								networkProviderBox.getValue()==null) {
+							showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), "Inputs Missing",
+									"Please Enter values in all the Fields!!");
+						} else {
+							int index = CustomerReadWriteData.customerDetailsList.indexOf(customerDetails);
+							ErrorDetails error = CustomerReadWriteData.payUtilitiesBill(customerDetails, withdrawAmtField.getText(), fromAccountTypeBox.getValue());
+							if (error != null) {
+								showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), error.getErrorMessage(),
+										error.getErrorDescription());
+							} else {
+								newWindow.close();
+								showAlert(AlertType.CONFIRMATION, loginManager.getScene().getWindow(),
+										"Pay For Utilties", "Bill paid Successfully!!");
 								CustomerDetails updatedCustInfo = CustomerReadWriteData.customerDetailsList.get(index);
 								loginManager.showExistingCustTransactionView(updatedCustInfo);
 							}
