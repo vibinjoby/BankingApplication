@@ -62,6 +62,9 @@ public class ExistCustEntryViewController extends FrontEndUtils {
 					else
 						showAlert(AlertType.INFORMATION, loginManager.getScene().getWindow(), "Incorrect Details!!",
 								"Please Try again");
+				} else {
+					showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), "Inputs Missing",
+							"Please Enter values in all the Fields!!");
 				}
 			}
 		});

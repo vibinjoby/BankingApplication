@@ -282,6 +282,148 @@ public class ExistCustTransactionController extends FrontEndUtils {
 
 			}
 		});
+		
+		depositBtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				GridPane gridPane = createRegistrationFormPane();
+
+				Label payToAcct = new Label("Pay To :");
+				gridPane.add(payToAcct, 0, 1);
+				
+				final ComboBox<String> toAccountTypeBox = new ComboBox<String>();
+				if (customerDetails.isChequingAcc())
+					toAccountTypeBox.getItems().add("Chequing");
+				if (customerDetails.isSavingsAcc())
+					toAccountTypeBox.getItems().add("Savings");
+				if (customerDetails.isStudentAcc())
+					toAccountTypeBox.getItems().add("Student");
+				gridPane.add(toAccountTypeBox, 1,1);
+				
+				Label payAmt = new Label("Pay Amount :");
+				gridPane.add(payAmt, 0, 2);
+
+				final TextField payAmtField = new TextField();
+				payAmtField.setPrefHeight(40);
+				gridPane.add(payAmtField, 1, 2);
+				
+				Button depositBtn = new Button("Deposit");
+				depositBtn.setPrefHeight(40);
+				depositBtn.setDefaultButton(true);
+				depositBtn.setPrefWidth(100);
+				gridPane.add(depositBtn, 0, 4, 2, 1);
+				GridPane.setHalignment(depositBtn, HPos.CENTER);
+				GridPane.setMargin(depositBtn, new Insets(20, 0, 20, 0));
+
+				Scene secondScene = new Scene(gridPane, 500, 300);
+
+				// New window (Stage)
+				final Stage newWindow = new Stage();
+				newWindow.setTitle("Deposit Money");
+				newWindow.setScene(secondScene);
+
+				// Set position of second window, related to primary window.
+				newWindow.setX(loginManager.primaryStage.getX() + 100);
+				newWindow.setY(loginManager.primaryStage.getY() + 100);
+
+				newWindow.show();
+
+				depositBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+					@Override
+					public void handle(ActionEvent event) {
+						if (toAccountTypeBox.getValue()==null || payAmtField.getText().isEmpty()) {
+							showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), "Inputs Missing",
+									"Please Enter values in all the Fields!!");
+						} else {
+							int index = CustomerReadWriteData.customerDetailsList.indexOf(customerDetails);
+							ErrorDetails error = CustomerReadWriteData.depositMoney(customerDetails, payAmtField.getText(), toAccountTypeBox.getValue());
+							if (error != null) {
+								showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), error.getErrorMessage(),
+										error.getErrorDescription());
+							} else {
+								newWindow.close();
+								showAlert(AlertType.CONFIRMATION, loginManager.getScene().getWindow(),
+										"Deposit Money", "Money Deposited Successfully!!");
+								CustomerDetails updatedCustInfo = CustomerReadWriteData.customerDetailsList.get(index);
+								loginManager.showExistingCustTransactionView(updatedCustInfo);
+							}
+						}
+					}
+				});
+			}
+		});
+		
+		withdrawBtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				GridPane gridPane = createRegistrationFormPane();
+
+				Label withdrawFromAcct = new Label("Withdraw from :");
+				gridPane.add(withdrawFromAcct, 0, 1);
+				
+				final ComboBox<String> fromAccountTypeBox = new ComboBox<String>();
+				if (customerDetails.isChequingAcc())
+					fromAccountTypeBox.getItems().add("Chequing");
+				if (customerDetails.isSavingsAcc())
+					fromAccountTypeBox.getItems().add("Savings");
+				if (customerDetails.isStudentAcc())
+					fromAccountTypeBox.getItems().add("Student");
+				gridPane.add(fromAccountTypeBox, 1,1);
+				
+				Label withdrawAmt = new Label("Withdraw Amount :");
+				gridPane.add(withdrawAmt, 0, 2);
+
+				final TextField withdrawAmtField = new TextField();
+				withdrawAmtField.setPrefHeight(40);
+				gridPane.add(withdrawAmtField, 1, 2);
+				
+				Button withdrawBtn = new Button("Withdraw");
+				withdrawBtn.setPrefHeight(40);
+				withdrawBtn.setDefaultButton(true);
+				withdrawBtn.setPrefWidth(100);
+				gridPane.add(withdrawBtn, 0, 4, 2, 1);
+				GridPane.setHalignment(withdrawBtn, HPos.CENTER);
+				GridPane.setMargin(withdrawBtn, new Insets(20, 0, 20, 0));
+
+				Scene secondScene = new Scene(gridPane, 500, 300);
+
+				// New window (Stage)
+				final Stage newWindow = new Stage();
+				newWindow.setTitle("Withdraw Money");
+				newWindow.setScene(secondScene);
+
+				// Set position of second window, related to primary window.
+				newWindow.setX(loginManager.primaryStage.getX() + 100);
+				newWindow.setY(loginManager.primaryStage.getY() + 100);
+
+				newWindow.show();
+
+				withdrawBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+					@Override
+					public void handle(ActionEvent event) {
+						if (fromAccountTypeBox.getValue()==null || withdrawAmtField.getText().isEmpty()) {
+							showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), "Inputs Missing",
+									"Please Enter values in all the Fields!!");
+						} else {
+							int index = CustomerReadWriteData.customerDetailsList.indexOf(customerDetails);
+							ErrorDetails error = CustomerReadWriteData.withdrawMoney(customerDetails, withdrawAmtField.getText(), fromAccountTypeBox.getValue());
+							if (error != null) {
+								showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), error.getErrorMessage(),
+										error.getErrorDescription());
+							} else {
+								newWindow.close();
+								showAlert(AlertType.CONFIRMATION, loginManager.getScene().getWindow(),
+										"Withdraw Money", "Money Withdrawn Successfully!!");
+								CustomerDetails updatedCustInfo = CustomerReadWriteData.customerDetailsList.get(index);
+								loginManager.showExistingCustTransactionView(updatedCustInfo);
+							}
+						}
+					}
+				});
+			}
+		});
 
 		submitBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override

@@ -273,6 +273,12 @@ public class CustomerReadWriteData extends BackEndUtils {
 	 * @return
 	 */
 	public static ErrorDetails depositMoney(CustomerDetails customerInfo, String payAmt, String acctType) {
+		try {
+			Double.parseDouble(payAmt);
+		} catch(NumberFormatException e) {
+			e.printStackTrace();
+			return new ErrorDetails("009", "Invalid Inputs", "Please enter a valid number for payment!!");
+		}
 		return makeTransaction(payAmt, customerInfo.getCustomerId(), acctType, "ADD");
 	}
 
@@ -283,6 +289,12 @@ public class CustomerReadWriteData extends BackEndUtils {
 	 * @return
 	 */
 	public static ErrorDetails withdrawMoney(CustomerDetails customerInfo, String payAmt, String acctType) {
+		try {
+			Double.parseDouble(payAmt);
+		} catch(NumberFormatException e) {
+			e.printStackTrace();
+			return new ErrorDetails("009", "Invalid Inputs", "Please enter a valid number for payment!!");
+		}
 		return makeTransaction(payAmt, customerInfo.getCustomerId(), acctType, "");
 	}
 
