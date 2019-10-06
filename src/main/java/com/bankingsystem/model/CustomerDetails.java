@@ -1,5 +1,7 @@
 package com.bankingsystem.model;
 
+import java.util.List;
+
 public class CustomerDetails {
 	private String customerId;
 	private CustomerName name;
@@ -13,10 +15,12 @@ public class CustomerDetails {
 	private boolean isSavingsAcc;
 	private boolean isChequingAcc;
 	private boolean isStudentAcc;
+	private List<String> accountStatement;
 
 	public CustomerDetails(String customerId, CustomerName name, String accountNumber, String customerEmail,
 			String dateOfBirth, PersonalDetails personalDetails, AccountType accountType, CardDetails debitCardDetails,
-			CardDetails creditCardDetails, boolean isSavingsAcc, boolean isChequingAcc, boolean isStudentAcc) {
+			CardDetails creditCardDetails, boolean isSavingsAcc, boolean isChequingAcc, boolean isStudentAcc,
+			List<String> accountStatement) {
 		super();
 		this.customerId = customerId;
 		this.name = name;
@@ -30,6 +34,7 @@ public class CustomerDetails {
 		this.isSavingsAcc = isSavingsAcc;
 		this.isChequingAcc = isChequingAcc;
 		this.isStudentAcc = isStudentAcc;
+		this.accountStatement = accountStatement;
 	}
 
 	public String getCustomerId() {
@@ -128,13 +133,21 @@ public class CustomerDetails {
 		this.dateOfBirth = dateOfBirth;
 	}
 
+	public List<String> getAccountStatement() {
+		return accountStatement;
+	}
+
+	public void setAccountStatement(List<String> accountStatement) {
+		this.accountStatement = accountStatement;
+	}
+
 	@Override
 	public String toString() {
 		return "CustomerDetails [customerId=" + customerId + ", name=" + name + ", accountNumber=" + accountNumber
 				+ ", customerEmail=" + customerEmail + ", dateOfBirth=" + dateOfBirth + ", personalDetails="
 				+ personalDetails + ", accountType=" + accountType + ", debitCardDetails=" + debitCardDetails
 				+ ", creditCardDetails=" + creditCardDetails + ", isSavingsAcc=" + isSavingsAcc + ", isChequingAcc="
-				+ isChequingAcc + ", isStudentAcc=" + isStudentAcc + "]";
+				+ isChequingAcc + ", isStudentAcc=" + isStudentAcc + ", accountStatement=" + accountStatement + "]";
 	}
 
 }

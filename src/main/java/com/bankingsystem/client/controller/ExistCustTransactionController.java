@@ -1,7 +1,11 @@
 package com.bankingsystem.client.controller;
 
+import java.util.List;
+
 import com.bankingsystem.client.view.LoginManager;
-import com.bankingsystem.db.CustomerReadWriteData;
+import com.bankingsystem.db.CustomerReadData;
+import com.bankingsystem.db.CustomerReadWriteDataImpl;
+import com.bankingsystem.model.AccountStatement;
 import com.bankingsystem.model.CustomerDetails;
 import com.bankingsystem.model.ErrorDetails;
 import com.bankingsystem.util.FrontEndUtils;
@@ -16,8 +20,12 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
@@ -80,6 +88,7 @@ public class ExistCustTransactionController extends FrontEndUtils {
 	 * @param customerDetails
 	 */
 	public void initManager(final LoginManager loginManager, final CustomerDetails customerDetails) {
+		final CustomerReadData readData = new CustomerReadWriteDataImpl();
 
 		savLbl.setText(FrontEndUtils.getSavingsBalanceDetails(customerDetails));
 		cheqLbl.setText(FrontEndUtils.getChequingBalanceDetails(customerDetails));
@@ -170,14 +179,14 @@ public class ExistCustTransactionController extends FrontEndUtils {
 					@Override
 					public void handle(ActionEvent event) {
 						if (recepientNameField.getText().isEmpty() || recepientEmailField.getText().isEmpty()
-								|| payAmtField.getText().isEmpty() || accountTypeBox.getValue()==null) {
+								|| payAmtField.getText().isEmpty() || accountTypeBox.getValue() == null) {
 							showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), "Inputs Missing",
 									"Please Enter values in all the Fields!!");
 						} else {
-							int index = CustomerReadWriteData.customerDetailsList.indexOf(customerDetails);
-							ErrorDetails error = CustomerReadWriteData.interacMoneyTransfer(
-									recepientNameField.getText(), recepientEmailField.getText(), customerDetails,
-									payAmtField.getText(), accountTypeBox.getValue());
+							int index = CustomerReadWriteDataImpl.customerDetailsList.indexOf(customerDetails);
+							ErrorDetails error = readData.interacMoneyTransfer(recepientNameField.getText(),
+									recepientEmailField.getText(), customerDetails, payAmtField.getText(),
+									accountTypeBox.getValue());
 							if (error != null) {
 								showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), error.getErrorMessage(),
 										error.getErrorDescription());
@@ -185,7 +194,8 @@ public class ExistCustTransactionController extends FrontEndUtils {
 								newWindow.close();
 								showAlert(AlertType.CONFIRMATION, loginManager.getScene().getWindow(),
 										"Interac Money Transfer", "Money Transferred Successfully!!");
-								CustomerDetails updatedCustInfo = CustomerReadWriteData.customerDetailsList.get(index);
+								CustomerDetails updatedCustInfo = CustomerReadWriteDataImpl.customerDetailsList
+										.get(index);
 								loginManager.showExistingCustTransactionView(updatedCustInfo);
 							}
 
@@ -257,14 +267,14 @@ public class ExistCustTransactionController extends FrontEndUtils {
 					@Override
 					public void handle(ActionEvent event) {
 
-						if (payAmtField.getText().isEmpty() || fromAccountTypeBox.getValue()==null
-								|| toAccountTypeBox.getValue()==null) {
+						if (payAmtField.getText().isEmpty() || fromAccountTypeBox.getValue() == null
+								|| toAccountTypeBox.getValue() == null) {
 							showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), "Inputs Missing",
 									"Please Enter values in all the Fields!!");
 						} else {
-							int index = CustomerReadWriteData.customerDetailsList.indexOf(customerDetails);
-							ErrorDetails error = CustomerReadWriteData.transferBtwnAccts(customerDetails,
-									payAmtField.getText(), fromAccountTypeBox.getValue(), toAccountTypeBox.getValue());
+							int index = CustomerReadWriteDataImpl.customerDetailsList.indexOf(customerDetails);
+							ErrorDetails error = readData.transferBtwnAccts(customerDetails, payAmtField.getText(),
+									fromAccountTypeBox.getValue(), toAccountTypeBox.getValue());
 							if (error != null) {
 								showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), error.getErrorMessage(),
 										error.getErrorDescription());
@@ -272,7 +282,8 @@ public class ExistCustTransactionController extends FrontEndUtils {
 								newWindow.close();
 								showAlert(AlertType.CONFIRMATION, loginManager.getScene().getWindow(),
 										"Transfer between Accounts", "Money Transferred Successfully!!");
-								CustomerDetails updatedCustInfo = CustomerReadWriteData.customerDetailsList.get(index);
+								CustomerDetails updatedCustInfo = CustomerReadWriteDataImpl.customerDetailsList
+										.get(index);
 								loginManager.showExistingCustTransactionView(updatedCustInfo);
 							}
 						}
@@ -282,7 +293,7 @@ public class ExistCustTransactionController extends FrontEndUtils {
 
 			}
 		});
-		
+
 		depositBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -290,7 +301,7 @@ public class ExistCustTransactionController extends FrontEndUtils {
 
 				Label payToAcct = new Label("Pay To :");
 				gridPane.add(payToAcct, 0, 1);
-				
+
 				final ComboBox<String> toAccountTypeBox = new ComboBox<String>();
 				if (customerDetails.isChequingAcc())
 					toAccountTypeBox.getItems().add("Chequing");
@@ -298,15 +309,15 @@ public class ExistCustTransactionController extends FrontEndUtils {
 					toAccountTypeBox.getItems().add("Savings");
 				if (customerDetails.isStudentAcc())
 					toAccountTypeBox.getItems().add("Student");
-				gridPane.add(toAccountTypeBox, 1,1);
-				
+				gridPane.add(toAccountTypeBox, 1, 1);
+
 				Label payAmt = new Label("Pay Amount :");
 				gridPane.add(payAmt, 0, 2);
 
 				final TextField payAmtField = new TextField();
 				payAmtField.setPrefHeight(40);
 				gridPane.add(payAmtField, 1, 2);
-				
+
 				Button depositBtn = new Button("Deposit");
 				depositBtn.setPrefHeight(40);
 				depositBtn.setDefaultButton(true);
@@ -332,20 +343,22 @@ public class ExistCustTransactionController extends FrontEndUtils {
 
 					@Override
 					public void handle(ActionEvent event) {
-						if (toAccountTypeBox.getValue()==null || payAmtField.getText().isEmpty()) {
+						if (toAccountTypeBox.getValue() == null || payAmtField.getText().isEmpty()) {
 							showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), "Inputs Missing",
 									"Please Enter values in all the Fields!!");
 						} else {
-							int index = CustomerReadWriteData.customerDetailsList.indexOf(customerDetails);
-							ErrorDetails error = CustomerReadWriteData.depositMoney(customerDetails, payAmtField.getText(), toAccountTypeBox.getValue());
+							int index = CustomerReadWriteDataImpl.customerDetailsList.indexOf(customerDetails);
+							ErrorDetails error = readData.depositMoney(customerDetails, payAmtField.getText(),
+									toAccountTypeBox.getValue());
 							if (error != null) {
 								showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), error.getErrorMessage(),
 										error.getErrorDescription());
 							} else {
 								newWindow.close();
-								showAlert(AlertType.CONFIRMATION, loginManager.getScene().getWindow(),
-										"Deposit Money", "Money Deposited Successfully!!");
-								CustomerDetails updatedCustInfo = CustomerReadWriteData.customerDetailsList.get(index);
+								showAlert(AlertType.CONFIRMATION, loginManager.getScene().getWindow(), "Deposit Money",
+										"Money Deposited Successfully!!");
+								CustomerDetails updatedCustInfo = CustomerReadWriteDataImpl.customerDetailsList
+										.get(index);
 								loginManager.showExistingCustTransactionView(updatedCustInfo);
 							}
 						}
@@ -353,7 +366,7 @@ public class ExistCustTransactionController extends FrontEndUtils {
 				});
 			}
 		});
-		
+
 		withdrawBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -361,7 +374,7 @@ public class ExistCustTransactionController extends FrontEndUtils {
 
 				Label withdrawFromAcct = new Label("Withdraw from :");
 				gridPane.add(withdrawFromAcct, 0, 1);
-				
+
 				final ComboBox<String> fromAccountTypeBox = new ComboBox<String>();
 				if (customerDetails.isChequingAcc())
 					fromAccountTypeBox.getItems().add("Chequing");
@@ -369,15 +382,15 @@ public class ExistCustTransactionController extends FrontEndUtils {
 					fromAccountTypeBox.getItems().add("Savings");
 				if (customerDetails.isStudentAcc())
 					fromAccountTypeBox.getItems().add("Student");
-				gridPane.add(fromAccountTypeBox, 1,1);
-				
+				gridPane.add(fromAccountTypeBox, 1, 1);
+
 				Label withdrawAmt = new Label("Withdraw Amount :");
 				gridPane.add(withdrawAmt, 0, 2);
 
 				final TextField withdrawAmtField = new TextField();
 				withdrawAmtField.setPrefHeight(40);
 				gridPane.add(withdrawAmtField, 1, 2);
-				
+
 				Button withdrawBtn = new Button("Withdraw");
 				withdrawBtn.setPrefHeight(40);
 				withdrawBtn.setDefaultButton(true);
@@ -403,20 +416,22 @@ public class ExistCustTransactionController extends FrontEndUtils {
 
 					@Override
 					public void handle(ActionEvent event) {
-						if (fromAccountTypeBox.getValue()==null || withdrawAmtField.getText().isEmpty()) {
+						if (fromAccountTypeBox.getValue() == null || withdrawAmtField.getText().isEmpty()) {
 							showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), "Inputs Missing",
 									"Please Enter values in all the Fields!!");
 						} else {
-							int index = CustomerReadWriteData.customerDetailsList.indexOf(customerDetails);
-							ErrorDetails error = CustomerReadWriteData.withdrawMoney(customerDetails, withdrawAmtField.getText(), fromAccountTypeBox.getValue());
+							int index = CustomerReadWriteDataImpl.customerDetailsList.indexOf(customerDetails);
+							ErrorDetails error = readData.withdrawMoney(customerDetails, withdrawAmtField.getText(),
+									fromAccountTypeBox.getValue());
 							if (error != null) {
 								showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), error.getErrorMessage(),
 										error.getErrorDescription());
 							} else {
 								newWindow.close();
-								showAlert(AlertType.CONFIRMATION, loginManager.getScene().getWindow(),
-										"Withdraw Money", "Money Withdrawn Successfully!!");
-								CustomerDetails updatedCustInfo = CustomerReadWriteData.customerDetailsList.get(index);
+								showAlert(AlertType.CONFIRMATION, loginManager.getScene().getWindow(), "Withdraw Money",
+										"Money Withdrawn Successfully!!");
+								CustomerDetails updatedCustInfo = CustomerReadWriteDataImpl.customerDetailsList
+										.get(index);
 								loginManager.showExistingCustTransactionView(updatedCustInfo);
 							}
 						}
@@ -424,7 +439,7 @@ public class ExistCustTransactionController extends FrontEndUtils {
 				});
 			}
 		});
-		
+
 		hydroBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -432,7 +447,7 @@ public class ExistCustTransactionController extends FrontEndUtils {
 
 				Label payFromAcct = new Label("Pay from :");
 				gridPane.add(payFromAcct, 0, 1);
-				
+
 				final ComboBox<String> fromAccountTypeBox = new ComboBox<String>();
 				if (customerDetails.isChequingAcc())
 					fromAccountTypeBox.getItems().add("Chequing");
@@ -440,15 +455,15 @@ public class ExistCustTransactionController extends FrontEndUtils {
 					fromAccountTypeBox.getItems().add("Savings");
 				if (customerDetails.isStudentAcc())
 					fromAccountTypeBox.getItems().add("Student");
-				gridPane.add(fromAccountTypeBox, 1,1);
-				
+				gridPane.add(fromAccountTypeBox, 1, 1);
+
 				Label payAmt = new Label("Pay Amount :");
 				gridPane.add(payAmt, 0, 2);
 
 				final TextField withdrawAmtField = new TextField();
 				withdrawAmtField.setPrefHeight(40);
 				gridPane.add(withdrawAmtField, 1, 2);
-				
+
 				Button payBtn = new Button("Pay");
 				payBtn.setPrefHeight(40);
 				payBtn.setDefaultButton(true);
@@ -474,12 +489,13 @@ public class ExistCustTransactionController extends FrontEndUtils {
 
 					@Override
 					public void handle(ActionEvent event) {
-						if (fromAccountTypeBox.getValue()==null || withdrawAmtField.getText().isEmpty()) {
+						if (fromAccountTypeBox.getValue() == null || withdrawAmtField.getText().isEmpty()) {
 							showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), "Inputs Missing",
 									"Please Enter values in all the Fields!!");
 						} else {
-							int index = CustomerReadWriteData.customerDetailsList.indexOf(customerDetails);
-							ErrorDetails error = CustomerReadWriteData.payUtilitiesBill(customerDetails, withdrawAmtField.getText(), fromAccountTypeBox.getValue());
+							int index = CustomerReadWriteDataImpl.customerDetailsList.indexOf(customerDetails);
+							ErrorDetails error = readData.payUtilitiesBill(customerDetails, withdrawAmtField.getText(),
+									fromAccountTypeBox.getValue());
 							if (error != null) {
 								showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), error.getErrorMessage(),
 										error.getErrorDescription());
@@ -487,7 +503,8 @@ public class ExistCustTransactionController extends FrontEndUtils {
 								newWindow.close();
 								showAlert(AlertType.CONFIRMATION, loginManager.getScene().getWindow(),
 										"Pay For Utilties", "Bill paid Successfully!!");
-								CustomerDetails updatedCustInfo = CustomerReadWriteData.customerDetailsList.get(index);
+								CustomerDetails updatedCustInfo = CustomerReadWriteDataImpl.customerDetailsList
+										.get(index);
 								loginManager.showExistingCustTransactionView(updatedCustInfo);
 							}
 						}
@@ -495,7 +512,7 @@ public class ExistCustTransactionController extends FrontEndUtils {
 				});
 			}
 		});
-		
+
 		phoneBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -503,7 +520,7 @@ public class ExistCustTransactionController extends FrontEndUtils {
 
 				Label payFromAcct = new Label("Pay from :");
 				gridPane.add(payFromAcct, 0, 1);
-				
+
 				final ComboBox<String> fromAccountTypeBox = new ComboBox<String>();
 				if (customerDetails.isChequingAcc())
 					fromAccountTypeBox.getItems().add("Chequing");
@@ -511,18 +528,18 @@ public class ExistCustTransactionController extends FrontEndUtils {
 					fromAccountTypeBox.getItems().add("Savings");
 				if (customerDetails.isStudentAcc())
 					fromAccountTypeBox.getItems().add("Student");
-				gridPane.add(fromAccountTypeBox, 1,1);
-				
+				gridPane.add(fromAccountTypeBox, 1, 1);
+
 				Label payAmt = new Label("Pay Amount :");
 				gridPane.add(payAmt, 0, 2);
 
 				final TextField withdrawAmtField = new TextField();
 				withdrawAmtField.setPrefHeight(40);
 				gridPane.add(withdrawAmtField, 1, 2);
-				
+
 				Label networkProvider = new Label("Network Provider :");
 				gridPane.add(networkProvider, 0, 3);
-				
+
 				final ComboBox<String> networkProviderBox = new ComboBox<String>();
 				networkProviderBox.getItems().add("Rogers");
 				networkProviderBox.getItems().add("Bell");
@@ -530,8 +547,8 @@ public class ExistCustTransactionController extends FrontEndUtils {
 				networkProviderBox.getItems().add("Chattr");
 				networkProviderBox.getItems().add("Fido");
 				networkProviderBox.getItems().add("Freedom");
-				gridPane.add(networkProviderBox, 1,3);
-				
+				gridPane.add(networkProviderBox, 1, 3);
+
 				Button payBtn = new Button("Pay");
 				payBtn.setPrefHeight(40);
 				payBtn.setDefaultButton(true);
@@ -557,13 +574,14 @@ public class ExistCustTransactionController extends FrontEndUtils {
 
 					@Override
 					public void handle(ActionEvent event) {
-						if (fromAccountTypeBox.getValue()==null || withdrawAmtField.getText().isEmpty() ||
-								networkProviderBox.getValue()==null) {
+						if (fromAccountTypeBox.getValue() == null || withdrawAmtField.getText().isEmpty()
+								|| networkProviderBox.getValue() == null) {
 							showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), "Inputs Missing",
 									"Please Enter values in all the Fields!!");
 						} else {
-							int index = CustomerReadWriteData.customerDetailsList.indexOf(customerDetails);
-							ErrorDetails error = CustomerReadWriteData.payUtilitiesBill(customerDetails, withdrawAmtField.getText(), fromAccountTypeBox.getValue());
+							int index = CustomerReadWriteDataImpl.customerDetailsList.indexOf(customerDetails);
+							ErrorDetails error = readData.payUtilitiesBill(customerDetails, withdrawAmtField.getText(),
+									fromAccountTypeBox.getValue());
 							if (error != null) {
 								showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), error.getErrorMessage(),
 										error.getErrorDescription());
@@ -571,7 +589,8 @@ public class ExistCustTransactionController extends FrontEndUtils {
 								newWindow.close();
 								showAlert(AlertType.CONFIRMATION, loginManager.getScene().getWindow(),
 										"Pay For Utilties", "Bill paid Successfully!!");
-								CustomerDetails updatedCustInfo = CustomerReadWriteData.customerDetailsList.get(index);
+								CustomerDetails updatedCustInfo = CustomerReadWriteDataImpl.customerDetailsList
+										.get(index);
 								loginManager.showExistingCustTransactionView(updatedCustInfo);
 							}
 						}
@@ -580,13 +599,58 @@ public class ExistCustTransactionController extends FrontEndUtils {
 			}
 		});
 
+		accStmtBtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				List<String> acctStmtList = customerDetails.getAccountStatement();
+				
+				TableView tableView = new TableView();
+
+		        TableColumn<String,AccountStatement> column1 = new TableColumn<String,AccountStatement>("TRANSACTION DESCRIPTION");
+		        column1.setCellValueFactory(new PropertyValueFactory<String,AccountStatement>("txnDescription"));
+
+
+		        TableColumn<String,AccountStatement> column2 = new TableColumn<String,AccountStatement>("TRANSACTION ACCOUNT");
+		        column2.setCellValueFactory(new PropertyValueFactory<String,AccountStatement>("txnAcct"));
+		        
+		        TableColumn<String,AccountStatement> column3 = new TableColumn<String,AccountStatement>("TRANSACTION AMOUNT");
+		        column3.setCellValueFactory(new PropertyValueFactory<String,AccountStatement>("txnAmt"));
+
+
+		        tableView.getColumns().add(column1);
+		        tableView.getColumns().add(column2);
+		        tableView.getColumns().add(column3);
+
+				if (acctStmtList != null) {
+					for (String acctStmt : acctStmtList) {
+						String[] stmt = acctStmt.split(":");
+						tableView.getItems().add(new AccountStatement(stmt[0], stmt[1], stmt[2]));
+					}
+				} else {
+					tableView.setPlaceholder(new Label("No rows to display"));
+				}
+				VBox vbox = new VBox(tableView);
+				Scene secondScene = new Scene(vbox, 650, 300);
+
+				// New window (Stage)
+				final Stage newWindow = new Stage();
+				newWindow.setTitle("Account Statement");
+				newWindow.setScene(secondScene);
+
+				// Set position of second window, related to primary window.
+				newWindow.setX(loginManager.primaryStage.getX() + 100);
+				newWindow.setY(loginManager.primaryStage.getY() + 100);
+
+				newWindow.show();
+			}
+		});
+
 		submitBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				ErrorDetails errorDetails = null;
 				if (!creditCrdNum.getText().isEmpty() && !mothMaidenName.getText().isEmpty()) {
-					errorDetails = CustomerReadWriteData.activateCreditCard(creditCrdNum.getText(),
-							mothMaidenName.getText());
+					errorDetails = readData.activateCreditCard(creditCrdNum.getText(), mothMaidenName.getText());
 					if (errorDetails != null) {
 						showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), errorDetails.getErrorMessage(),
 								errorDetails.getErrorDescription());

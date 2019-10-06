@@ -1,7 +1,8 @@
 package com.bankingsystem.client.controller;
 
 import com.bankingsystem.client.view.LoginManager;
-import com.bankingsystem.db.CustomerReadWriteData;
+import com.bankingsystem.db.CustomerReadWriteDataImpl;
+import com.bankingsystem.db.CustomerWriteData;
 import com.bankingsystem.model.CustomerDetails;
 import com.bankingsystem.model.CustomerName;
 import com.bankingsystem.model.ErrorDetails;
@@ -68,13 +69,14 @@ public class NewCustViewController extends FrontEndUtils {
 		submitBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				CustomerWriteData writeData = new CustomerReadWriteDataImpl();
 				CustomerDetails custDetails = new CustomerDetails(null, null, null, emailAddr.getText(),
 						(dateOfBirth != null && dateOfBirth.getValue() != null) ? String.valueOf(dateOfBirth.getValue()): null,
-						null, null, null, null, false, false, false);
+						null, null, null, null, false, false, false,null);
 				custDetails.setName(new CustomerName(firstName.getText(), middleName.getText(), lastName.getText()));
 				addCustDetails(custDetails, checkBoxSav, checkBoxCheq, checkBoxStud, mothMaidenName, sinNumber,
 						pinNumber);
-				ErrorDetails error = CustomerReadWriteData.addNewCustomer(custDetails);
+				ErrorDetails error = writeData.addNewCustomer(custDetails);
 
 				if (error == null) {
 					showAlert(AlertType.INFORMATION, loginManager.getScene().getWindow(), "Registration Successful! ",

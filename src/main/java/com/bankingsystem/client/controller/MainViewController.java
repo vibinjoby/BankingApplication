@@ -6,7 +6,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.stage.Stage;
 
 public class MainViewController {
 	@FXML
@@ -21,7 +20,7 @@ public class MainViewController {
 	@FXML
 	private Button activateCreditCrdBtn;
 
-	public void initManager(final LoginManager loginManager,final Stage primaryStage) {
+	public void initManager(final LoginManager loginManager) {
 		newCustomerBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {

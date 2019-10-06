@@ -1,7 +1,8 @@
 package com.bankingsystem.client.controller;
 
 import com.bankingsystem.client.view.LoginManager;
-import com.bankingsystem.db.CustomerReadWriteData;
+import com.bankingsystem.db.CustomerReadData;
+import com.bankingsystem.db.CustomerReadWriteDataImpl;
 import com.bankingsystem.model.CustomerDetails;
 import com.bankingsystem.util.FrontEndUtils;
 
@@ -53,9 +54,10 @@ public class ExistCustEntryViewController extends FrontEndUtils {
 		submitBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				CustomerReadData readData = new CustomerReadWriteDataImpl();
 
 				if (!debitCrdNum.getText().isEmpty() && !mothMaidenName.getText().isEmpty() && !emailAddr.getText().isEmpty()) {
-					CustomerDetails customerDetails = CustomerReadWriteData.getCustDetailsUsingDebitCard(
+					CustomerDetails customerDetails = readData.getCustDetailsUsingDebitCard(
 							debitCrdNum.getText(), mothMaidenName.getText(), emailAddr.getText());
 					if (customerDetails != null)
 						loginManager.showExistingCustTransactionView(customerDetails);
