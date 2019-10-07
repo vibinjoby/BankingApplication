@@ -162,6 +162,45 @@ public class FrontEndUtils extends BackEndUtils {
 
 		return gridPane;
 	}
+	public static boolean validateSinNumber(String sinNumber) {
+		boolean isValid = false;
+		if(validateNumber(sinNumber)) {
+			if(sinNumber.length() == 10) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			isValid = false;
+		}
+		return isValid;
+	}
+	public static boolean validatePinNumber(String pinNumber) {
+		boolean isValid = false;
+		if(validateNumber(pinNumber)) {
+			if(pinNumber.length() ==4) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			isValid = false;
+		}
+		return isValid;
+	}
+	/**
+	 * @param number
+	 * @return
+	 */
+	public static boolean validateNumber(String number) {
+		try {
+			 Long.parseLong(number);
+		} catch(Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
 
 	public static long generateAccountNumber() {
 		return accNumber;
