@@ -25,6 +25,7 @@ public class CustomerReadWriteDataImpl extends BackEndUtils implements CustomerR
 		try {
 			writeIntoJsonFile(fileDetails, customerDetails);
 			updateJsonFields(fileDetails, customerDetails);
+			customerDetailsList = readJsonFields();
 			return null;
 		} catch (Exception e) {
 			e.printStackTrace();
