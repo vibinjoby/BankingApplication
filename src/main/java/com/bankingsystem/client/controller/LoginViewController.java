@@ -27,6 +27,9 @@ public class LoginViewController extends FrontEndUtils{
 					String sessionID = authorize();
 					if (sessionID != null) {
 						loginManager.authenticated();
+					} else {
+						showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), "Incorrect Credentials",
+								"Please Check the Username and password!!");
 					}
 				} else {
 					showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), "No Inputs Found",
