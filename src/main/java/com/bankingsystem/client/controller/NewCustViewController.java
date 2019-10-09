@@ -69,43 +69,48 @@ public class NewCustViewController extends FrontEndUtils {
 		submitBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				if (!firstName.getText().isEmpty() && !middleName.getText().isEmpty() && !lastName.getText().isEmpty()
-						&& !emailAddr.getText().isEmpty() && dateOfBirth.getValue() != null
-						&& !mothMaidenName.getText().isEmpty() && !sinNumber.getText().isEmpty()
-						&& !pinNumber.getText().isEmpty()
+				if (!firstName.getText().isEmpty() && !lastName.getText().isEmpty() && !emailAddr.getText().isEmpty()
+						&& dateOfBirth.getValue() != null && !mothMaidenName.getText().isEmpty()
+						&& !sinNumber.getText().isEmpty() && !pinNumber.getText().isEmpty()
 						&& (checkBoxCheq.isSelected() || checkBoxStud.isSelected() || checkBoxSav.isSelected())) {
+					//If the Email id entered is invalid throw an error
+					if (isValidEmail(emailAddr.getText())) {
+						//If the PIN number is less or more than 4 numbers or if the SIN number is less or more than 10 digits throw an error
+						if (FrontEndUtils.validatePinNumber(pinNumber.getText())
+								&& FrontEndUtils.validateSinNumber(sinNumber.getText())) {
 
-					if (FrontEndUtils.validatePinNumber(pinNumber.getText())
-							&& FrontEndUtils.validateSinNumber(sinNumber.getText())) {
-
-						CustomerWriteData writeData = new CustomerReadWriteDataImpl();
-						CustomerDetails custDetails = new CustomerDetails(null, null, null, emailAddr.getText(),
-								(dateOfBirth != null && dateOfBirth.getValue() != null)
-										? String.valueOf(dateOfBirth.getValue())
-										: null,
-								null, null, null, null, false, false, false, null);
-						custDetails.setName(
-								new CustomerName(firstName.getText(), middleName.getText(), lastName.getText()));
-						addCustDetails(custDetails, checkBoxSav, checkBoxCheq, checkBoxStud, mothMaidenName, sinNumber,
-								pinNumber);
-						ErrorDetails error = writeData.addNewCustomer(custDetails);
-
-						if (error == null) {
-							showAlert(AlertType.INFORMATION, loginManager.getScene().getWindow(),
-									"Registration Successful! ", "\n Mr. " + custDetails.getName().getFirstName()
-											+ "Your Account Number is: " + custDetails.getAccountNumber());
-							loginManager.showMainView();
-						} else
-							showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), "Registration Failed!!",
-									"\n" + error.getErrorDescription());
-					} else {
-						if(!FrontEndUtils.validatePinNumber(pinNumber.getText())) {
-							showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), "Invalid PIN Number",
-									"Please make sure the PIN number is 4 digits and its a valid number");
-						} else if(!FrontEndUtils.validateSinNumber(sinNumber.getText())) {
-							showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), "Invalid SIN Number",
-									"Please make sure the SIN number is 10 digits and its a valid number");
+							CustomerWriteData writeData = new CustomerReadWriteDataImpl();
+							CustomerDetails custDetails = new CustomerDetails(null, null, null, emailAddr.getText(),
+									(dateOfBirth != null && dateOfBirth.getValue() != null)
+											? String.valueOf(dateOfBirth.getValue())
+											: null,
+									null, null, null, null, false, false, false, null);
+							custDetails.setName(
+									new CustomerName(firstName.getText(), middleName.getText(), lastName.getText()));
+							addCustDetails(custDetails, checkBoxSav, checkBoxCheq, checkBoxStud, mothMaidenName,
+									sinNumber, pinNumber);
+							ErrorDetails error = writeData.addNewCustomer(custDetails);
+							//If an error is thrown from the backend read the message and show it in the UI
+							if (error == null) {
+								showAlert(AlertType.INFORMATION, loginManager.getScene().getWindow(),
+										"Registration Successful! ", "\n Mr. " + custDetails.getName().getFirstName()
+												+ "Your Account Number is: " + custDetails.getAccountNumber());
+								loginManager.showMainView();
+							} else
+								showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), "Registration Failed!!",
+										"\n" + error.getErrorDescription());
+						} else {
+							if (!FrontEndUtils.validatePinNumber(pinNumber.getText())) {
+								showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), "Invalid PIN Number",
+										"Please make sure the PIN number is 4 digits and its a valid number");
+							} else if (!FrontEndUtils.validateSinNumber(sinNumber.getText())) {
+								showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), "Invalid SIN Number",
+										"Please make sure the SIN number is 10 digits and its a valid number");
+							}
 						}
+					} else {
+						showAlert(AlertType.ERROR, loginManager.getScene().getWindow(), "Invalid Email",
+								"Please Enter a valid email!!");
 					}
 
 				} else {

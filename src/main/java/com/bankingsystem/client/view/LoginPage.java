@@ -10,6 +10,9 @@ public class LoginPage extends Application{
 		launch(args);
 	}
 
+	/**
+	 * Starting point of the application
+	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		GridPane gridPane = new GridPane();

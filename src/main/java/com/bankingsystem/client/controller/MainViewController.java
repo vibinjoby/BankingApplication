@@ -17,9 +17,6 @@ public class MainViewController {
 	@FXML
 	private Button existingCustomerBtn;
 
-	@FXML
-	private Button activateCreditCrdBtn;
-
 	public void initManager(final LoginManager loginManager) {
 		newCustomerBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override

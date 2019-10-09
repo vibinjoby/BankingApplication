@@ -42,6 +42,9 @@ public class LoginManager {
 		showLoginScreen();
 	}
 
+	/**
+	 * Method to show Login Screen
+	 */
 	public void showLoginScreen() {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("loginpage.fxml"));
@@ -54,6 +57,9 @@ public class LoginManager {
 		}
 	}
 
+	/**
+	 * Method to show main view page after logging in
+	 */
 	public void showMainView() {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("mainview.fxml"));
@@ -66,6 +72,9 @@ public class LoginManager {
 		}
 	}
 
+	/**
+	 * Method to show new customer page
+	 */
 	public void showNewCustomerPage() {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("newcustomerpage.fxml"));
@@ -78,6 +87,9 @@ public class LoginManager {
 		}
 	}
 
+	/**
+	 * Method to show existing customer page
+	 */
 	public void showExistingCustomerPage() {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("exist_customer_entrypage.fxml"));
@@ -90,6 +102,10 @@ public class LoginManager {
 		}
 	}
 
+	/**
+	 * @param customerDetails
+	 * Method to show existing customer transaction page
+	 */
 	public void showExistingCustTransactionView(CustomerDetails customerDetails) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("exist_customer_transactionpage.fxml"));

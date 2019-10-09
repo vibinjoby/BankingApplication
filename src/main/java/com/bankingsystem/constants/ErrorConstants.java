@@ -35,5 +35,9 @@ public interface ErrorConstants {
 	public static final String errorCode_009 = "009";
 	public static final String errorCode_009_message = "Invalid Inputs";
 	public static final String errorCode_009_description = "Please enter a valid number for payment!!";
+	
+	public static final String errorCode_010 = "001";
+	public static final String errorCode_010_message = "SIN number";
+	public static final String errorCode_010_description = "SIN number Already Exists";
 
 }

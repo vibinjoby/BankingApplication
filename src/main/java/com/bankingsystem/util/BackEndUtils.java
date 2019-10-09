@@ -29,7 +29,8 @@ import com.google.gson.stream.JsonReader;
 public class BackEndUtils implements BankingConstants {
 	/**
 	 * @param jsonString
-	 * @return https://coderwall.com/p/ab5qha/convert-json-string-to-pretty-print-java-gson
+	 * @return 
+	 * Method to do proper indentation for JSON in a txt file
 	 */
 	public static String toPrettyFormat(String jsonString) {
 		JsonParser parser = new JsonParser();
@@ -44,6 +45,7 @@ public class BackEndUtils implements BankingConstants {
 	/**
 	 * @param fileName
 	 * @return
+	 * Method to get file from resources folder
 	 */
 	public File getFileFromResources(String fileName) {
 
@@ -62,6 +64,7 @@ public class BackEndUtils implements BankingConstants {
 	 * @param fileDetails
 	 * @throws FileNotFoundException
 	 * @throws UnsupportedEncodingException
+	 * Method to create a new file for customer
 	 */
 	public static void createNewFileForCustomer(FileDetails fileDetails)
 			throws FileNotFoundException, UnsupportedEncodingException {
@@ -77,6 +80,7 @@ public class BackEndUtils implements BankingConstants {
 	/**
 	 * @param customerDetails
 	 * @return
+	 * Method to convert a JSON object as String
 	 */
 	public static String getJsonObjAsString(Object customerDetails) {
 		Gson gson = new Gson();
@@ -87,6 +91,7 @@ public class BackEndUtils implements BankingConstants {
 	 * @param folder
 	 * @param fileList
 	 * @return
+	 * Method to list files from a folder
 	 */
 	public static List<File> listFilesForFolder(final File folder, List<File> fileList) {
 		if (folder.listFiles() != null)
@@ -102,6 +107,7 @@ public class BackEndUtils implements BankingConstants {
 	/**
 	 * @param email
 	 * @return
+	 * Method to check if the email exists already for another customer
 	 */
 	public static boolean checkEmailExists(String email) {
 		List<CustomerDetails> custDetailsList = CustomerReadWriteDataImpl.customerDetailsList;
@@ -120,6 +126,7 @@ public class BackEndUtils implements BankingConstants {
 	 * @param mothMaidenName
 	 * @param emailId
 	 * @return
+	 * Method to validate customer details for credit card activation
 	 */
 	public static boolean validateCustDetails(CustomerDetails custDetails, String mothMaidenName, String emailId) {
 		if (custDetails.getPersonalDetails() != null) {
@@ -136,6 +143,7 @@ public class BackEndUtils implements BankingConstants {
 	 * @param transactionAmt
 	 * @param operation
 	 * @return
+	 * Method to update the balance details of the customer
 	 */
 	public static double updateBalance(String accBalance, String transactionAmt, String operation) {
 		if (operation_ADD.equalsIgnoreCase(operation))
@@ -148,6 +156,7 @@ public class BackEndUtils implements BankingConstants {
 	 * @param accBalance
 	 * @param transactionAmt
 	 * @return
+	 * method to check if the customer has sufficient balance
 	 */
 	public static boolean checkSufficientBalance(String accBalance, String transactionAmt, String operation) {
 		try {
@@ -167,6 +176,7 @@ public class BackEndUtils implements BankingConstants {
 
 	/**
 	 * @param updatedCustomerDetails
+	 * method to update customer fields in a file for customer
 	 */
 	public static void updateCustomerDetailsInFile(CustomerDetails updatedCustomerDetails) {
 		String fileName = updatedCustomerDetails.getName().getFirstName()
@@ -184,6 +194,7 @@ public class BackEndUtils implements BankingConstants {
 	/**
 	 * @param debitCard
 	 * @return
+	 * Method to get customer details using email ID
 	 */
 	public static CustomerDetails getCustDetailsUsingEmail(String emailId) {
 		List<CustomerDetails> custDetailsList = CustomerReadWriteDataImpl.customerDetailsList;
@@ -203,6 +214,7 @@ public class BackEndUtils implements BankingConstants {
 	 * @param acctType
 	 * @param operation
 	 * @return
+	 * Method to make a transaction for the customer
 	 */
 	public static ErrorDetails makeTransaction(String transactionAmt, String custId, String acctType, String operation,
 			String txnDescription) {
@@ -275,7 +287,8 @@ public class BackEndUtils implements BankingConstants {
 
 	/**
 	 * @param filename
-	 * @throws Exception https://stackabuse.com/reading-and-writing-json-in-java/
+	 * @throws Exception 
+	 * Method to write as a JSON file for the customer
 	 */
 	public static void writeIntoJsonFile(FileDetails fileDetails, CustomerDetails customerDetails) throws Exception {
 		createNewFileForCustomer(fileDetails);
@@ -285,7 +298,8 @@ public class BackEndUtils implements BankingConstants {
 
 	/**
 	 * @param filename
-	 * @throws Exception https://stackabuse.com/reading-and-writing-json-in-java/
+	 * @throws Exception 
+	 * Method to update JSON fields of the customer
 	 */
 	public static void updateJsonFields(FileDetails fileDetails, CustomerDetails customerDetailsUpdatedObj)
 			throws JSONException, IOException {
@@ -302,7 +316,8 @@ public class BackEndUtils implements BankingConstants {
 
 	/**
 	 * @return
-	 * @throws FileNotFoundException https://stackoverflow.com/questions/1844688/how-to-read-all-files-in-a-folder-from-java
+	 * @throws FileNotFoundException 
+	 * Method to read JSON fields from the file of all the customers
 	 */
 	public static List<CustomerDetails> readJsonFields() {
 		List<CustomerDetails> customerDetailsList = null;
@@ -322,5 +337,22 @@ public class BackEndUtils implements BankingConstants {
 			e.printStackTrace();
 		}
 		return customerDetailsList;
+	}
+	
+	/**
+	 * @param sinNumber
+	 * @return
+	 * method to check if a SIN number exists already for a customer
+	 */
+	public boolean checkSinNumberExists(String sinNumber) {
+		List<CustomerDetails> custDetailsList = CustomerReadWriteDataImpl.customerDetailsList;
+		if (custDetailsList != null) {
+			for (CustomerDetails cust : custDetailsList) {
+				if (sinNumber.equalsIgnoreCase(cust.getPersonalDetails().getSinNumber())) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }

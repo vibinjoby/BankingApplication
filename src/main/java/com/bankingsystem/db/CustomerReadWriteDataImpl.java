@@ -2,23 +2,28 @@ package com.bankingsystem.db;
 
 import java.util.List;
 
-import com.bankingsystem.constants.BankingConstants;
 import com.bankingsystem.model.CustomerDetails;
 import com.bankingsystem.model.ErrorDetails;
 import com.bankingsystem.model.FileDetails;
 import com.bankingsystem.util.BackEndUtils;
 
-public class CustomerReadWriteDataImpl extends BackEndUtils implements CustomerReadData, BankingConstants {
+public class CustomerReadWriteDataImpl extends BackEndUtils implements CustomerReadData {
 
 	public static List<CustomerDetails> customerDetailsList;
 	static {
 		customerDetailsList = readJsonFields();
 	}
 
+	/**
+	 * Method to Add a new Customer to the file
+	 */
 	@Override
 	public ErrorDetails addNewCustomer(CustomerDetails customerDetails) {
 		if (checkEmailExists(customerDetails.getCustomerEmail()))
 			return new ErrorDetails(errorCode_001, errorCode_001_message, errorCode_001_description);
+		else if (checkSinNumberExists(customerDetails.getPersonalDetails().getSinNumber())) {
+			return new ErrorDetails(errorCode_010, errorCode_010_message, errorCode_010_description);
+		}
 		String fileName = customerDetails.getName().getFirstName() + customerDetails.getCustomerId().substring(0, 4);
 		FileDetails fileDetails = new FileDetails(folderPath + fileName + fileExtension,
 				folderPath + fileName + fileExtension);
@@ -55,6 +60,7 @@ public class CustomerReadWriteDataImpl extends BackEndUtils implements CustomerR
 	/**
 	 * @param creditCardNumber
 	 * @return
+	 * Method to activate credit using card number and mother's maiden name
 	 */
 	@Override
 	public ErrorDetails activateCreditCard(String creditCardNumber, String mothMaidenName) {
@@ -99,6 +105,7 @@ public class CustomerReadWriteDataImpl extends BackEndUtils implements CustomerR
 	 * @param payAmt
 	 * @param acctType
 	 * @return
+	 * Method to do interac money transfer option
 	 */
 	@Override
 	public ErrorDetails interacMoneyTransfer(String toName, String toEmail, CustomerDetails customerInfo, String payAmt,
@@ -139,6 +146,7 @@ public class CustomerReadWriteDataImpl extends BackEndUtils implements CustomerR
 	 * @param payAmt
 	 * @param acctType
 	 * @return
+	 * Method to deposit money into their account
 	 */
 	@Override
 	public ErrorDetails depositMoney(CustomerDetails customerInfo, String payAmt, String acctType) {
@@ -156,6 +164,7 @@ public class CustomerReadWriteDataImpl extends BackEndUtils implements CustomerR
 	 * @param payAmt
 	 * @param acctType
 	 * @return
+	 *  Method to withdraw money from their account
 	 */
 	@Override
 	public ErrorDetails withdrawMoney(CustomerDetails customerInfo, String payAmt, String acctType) {
@@ -174,6 +183,7 @@ public class CustomerReadWriteDataImpl extends BackEndUtils implements CustomerR
 	 * @param fromAcct
 	 * @param toAcct
 	 * @return
+	 * Method to transfer between their accounts
 	 */
 	@Override
 	public ErrorDetails transferBtwnAccts(CustomerDetails customerInfo, String payAmt, String fromAcct, String toAcct) {
@@ -198,7 +208,7 @@ public class CustomerReadWriteDataImpl extends BackEndUtils implements CustomerR
 	}
 
 	/**
-	 *
+	 *	Method to pay utilty bills including mobile and hydro
 	 */
 	@Override
 	public ErrorDetails payUtilitiesBill(CustomerDetails customerInfo, String payAmt, String acctType) {

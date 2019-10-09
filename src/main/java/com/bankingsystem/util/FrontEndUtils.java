@@ -37,6 +37,12 @@ public class FrontEndUtils extends BackEndUtils {
 		readAppProperties();
 	}
 
+	/**
+	 * @param textField
+	 * @param gridPane
+	 * @param message
+	 * Method to check if all the fields are entered properly
+	 */
 	public static void checkMandatoryFields(TextField textField, GridPane gridPane, String message) {
 		if (textField.getText().isEmpty()) {
 			showAlert(Alert.AlertType.ERROR, gridPane.getScene().getWindow(), "Form Error!",
@@ -45,6 +51,13 @@ public class FrontEndUtils extends BackEndUtils {
 		}
 	}
 
+	/**
+	 * @param alertType
+	 * @param owner
+	 * @param title
+	 * @param message
+	 * Method to show an alert popup with a message
+	 */
 	public static void showAlert(Alert.AlertType alertType, Window owner, String title, String message) {
 		Alert alert = new Alert(alertType);
 		alert.setTitle(title);
@@ -54,6 +67,9 @@ public class FrontEndUtils extends BackEndUtils {
 		alert.show();
 	}
 
+	/**
+	 * Method to read the property files at the start of the class 
+	 */
 	public static void readAppProperties() {
 		try {
 			File file = new File(FrontEndUtils.class.getClassLoader().getResource("application.json").getFile());
@@ -70,6 +86,11 @@ public class FrontEndUtils extends BackEndUtils {
 		}
 	}
 
+	/**
+	 * @param appProps
+	 * @throws IOException
+	 * method to update the application properties after incrementing the values
+	 */
 	public static void updateAppProps(ApplicationProperties appProps) throws IOException {
 		appProps.setAccNumber(String.valueOf(accNumber + 1));
 		appProps.setDebitCardStartNumber(String.valueOf(debitCardStartNumber + 1));
@@ -80,6 +101,16 @@ public class FrontEndUtils extends BackEndUtils {
 				.getAbsolutePath()), toPrettyFormat(json).getBytes());
 	}
 
+	/**
+	 * @param custDetails
+	 * @param checkBoxSav
+	 * @param checkBoxCheq
+	 * @param checkBoxStud
+	 * @param maideNameField
+	 * @param sinNumField
+	 * @param pinNumField
+	 * Method to add a new customer details
+	 */
 	public static void addCustDetails(final CustomerDetails custDetails, final CheckBox checkBoxSav,
 			final CheckBox checkBoxCheq, final CheckBox checkBoxStud, final TextField maideNameField,
 			final TextField sinNumField, final TextField pinNumField) {
@@ -110,6 +141,11 @@ public class FrontEndUtils extends BackEndUtils {
 
 		readAppProperties();
 	}
+	/**
+	 * @param custDetails
+	 * @return
+	 * method to get savings balance details of the customer
+	 */
 	public static String getSavingsBalanceDetails(CustomerDetails custDetails) {
 		StringBuffer accBalance = new StringBuffer();
 		if (custDetails.isSavingsAcc() && custDetails.getAccountType()!=null && custDetails.getAccountType().getSavingsAccount()!=null) {
@@ -117,6 +153,11 @@ public class FrontEndUtils extends BackEndUtils {
 		}
 		return accBalance.toString();
 	}
+	/**
+	 * @param custDetails
+	 * @return
+	 * method to get student balance details of the customer
+	 */
 	public static String getStudentBalanceDetails(CustomerDetails custDetails) {
 		StringBuffer accBalance = new StringBuffer();
 		if (custDetails.isStudentAcc() && custDetails.getAccountType()!=null && custDetails.getAccountType().getStudentAccount()!=null) {
@@ -124,6 +165,11 @@ public class FrontEndUtils extends BackEndUtils {
 		}
 		return accBalance.toString();
 	}
+	/**
+	 * @param custDetails
+	 * @return
+	 * method to get chequing balance details of the customer
+	 */
 	public static String getChequingBalanceDetails(CustomerDetails custDetails) {
 		StringBuffer accBalance = new StringBuffer();
 		if (custDetails.isChequingAcc() && custDetails.getAccountType()!=null && custDetails.getAccountType().getChequingAccount()!=null) {
@@ -131,6 +177,10 @@ public class FrontEndUtils extends BackEndUtils {
 		}
 		return accBalance.toString();
 	}
+	/**
+	 * @return
+	 * Method to create a Grid Pane on click of a button in controller
+	 */
 	public static GridPane createRegistrationFormPane() {
 		// Instantiate a new Grid Pane
 		GridPane gridPane = new GridPane();
@@ -162,6 +212,11 @@ public class FrontEndUtils extends BackEndUtils {
 
 		return gridPane;
 	}
+	/**
+	 * @param sinNumber
+	 * @return
+	 * method to validate SIN number
+	 */
 	public static boolean validateSinNumber(String sinNumber) {
 		boolean isValid = false;
 		if(validateNumber(sinNumber)) {
@@ -175,6 +230,11 @@ public class FrontEndUtils extends BackEndUtils {
 		}
 		return isValid;
 	}
+	/**
+	 * @param pinNumber
+	 * @return
+	 * method to validate PIN number
+	 */
 	public static boolean validatePinNumber(String pinNumber) {
 		boolean isValid = false;
 		if(validateNumber(pinNumber)) {
@@ -192,6 +252,11 @@ public class FrontEndUtils extends BackEndUtils {
 	 * @param number
 	 * @return
 	 */
+	/**
+	 * @param number
+	 * @return
+	 * Method to validate if the given input is a number or not
+	 */
 	public static boolean validateNumber(String number) {
 		try {
 			 Long.parseLong(number);
@@ -201,6 +266,15 @@ public class FrontEndUtils extends BackEndUtils {
 		}
 		return true;
 	}
+	/**
+	 * @param email
+	 * @return
+	 * Method to validate email
+	 */
+	public static boolean isValidEmail(String email) {
+	      String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+	      return email.matches(regex);
+	   }
 
 	public static long generateAccountNumber() {
 		return accNumber;
